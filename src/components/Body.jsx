@@ -5,9 +5,11 @@ import RightSidebar from "./RightSidebar";
 const Body = () => {
   return (
     <>
-      <LeftSidebar></LeftSidebar>
-      <Content></Content>
-      <RightSidebar></RightSidebar>
+      <div className="position-relative d-flex flex-row">
+        <LeftSidebar></LeftSidebar>
+        <Content></Content>
+        <RightSidebar></RightSidebar>
+      </div>
     </>
   );
 };
