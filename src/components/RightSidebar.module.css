@@ -1,6 +1,6 @@
 .stickyRight {
-    width: 25%;
-    height: 150vh;
+    width: 25vw;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: start;

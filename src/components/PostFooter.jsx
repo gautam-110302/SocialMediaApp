@@ -4,9 +4,9 @@ import { PiShareFat } from "react-icons/pi";
 
 const PostFooter = ()=>{
   return <div className="d-flex">
-    <button type="button" class="btn btn-dark border border-secondary" style={{width : "33%"}}><AiOutlineLike />Like</button>
-    <button type="button" class="btn btn-dark border border-secondary" style={{width : "34%"}}><FaRegComment />Comment</button>
-    <button type="button" class="btn btn-dark border border-secondary" style={{width : "33%"}}><PiShareFat />Share</button>
+    <button type="button" className="btn btn-dark border border-secondary" style={{width : "33%"}}><AiOutlineLike />Like</button>
+    <button type="button" className="btn btn-dark border border-secondary" style={{width : "34%"}}><FaRegComment />Comment</button>
+    <button type="button" className="btn btn-dark border border-secondary" style={{width : "33%"}}><PiShareFat />Share</button>
   </div>
 }
 

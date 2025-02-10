@@ -1,6 +1,10 @@
-import styles from "./LeftSidebar.module.css";
 
-const LeftSidebar = () => {
+import styles from "./LeftSidebar.module.css";
+import { LuTwitter } from "react-icons/lu";
+
+const LeftSidebar = ({selectedTab, handleTabButtonClick}) => {
+  
+
   return (
     <div className={`position-sticky top-0 start-0 ${styles.stickyLeft}`}>
       <div
@@ -11,91 +15,33 @@ const LeftSidebar = () => {
           href="/"
           className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
         >
-          <svg className="bi pe-none me-2" width="40" height="32">
-            <use xlinkHref="#bootstrap"></use>
-          </svg>
-          <span className="fs-4">Sidebar</span>
+          <span className="fs-4"><LuTwitter />Twitter</span>
         </a>
         <hr />
         <ul className="nav nav-pills flex-column mb-auto">
-          <li className="nav-item">
-            <a href="#" className="nav-link active" aria-current="page">
-              <svg className="bi pe-none me-2" width="16" height="16">
-                <use xlinkHref="#home"></use>
-              </svg>
+          <li className="nav-item" onClick={()=>handleTabButtonClick("Home")}>
+            <a href="#" className={`nav-link text-white ${selectedTab ==="Home" && "active"}`} aria-current="page">
               Home
             </a>
           </li>
-          <li>
-            <a href="#" className="nav-link text-white">
-              <svg className="bi pe-none me-2" width="16" height="16">
-                <use xlinkHref="#speedometer2"></use>
-              </svg>
-              Dashboard
+          <li onClick={()=>handleTabButtonClick("Explore")}>
+            <a href="#" className={`nav-link text-white ${selectedTab ==="Explore" && "active"}`} >
+              Explore
             </a>
           </li>
-          <li>
-            <a href="#" className="nav-link text-white">
-              <svg className="bi pe-none me-2" width="16" height="16">
-                <use xlinkHref="#table"></use>
-              </svg>
-              Orders
+          <li onClick={()=>handleTabButtonClick("Bookmarks")}>
+            <a href="#" className={`nav-link text-white ${selectedTab ==="Bookmarks" && "active"}`} >
+              Bookmarks
             </a>
           </li>
-          <li>
-            <a href="#" className="nav-link text-white">
-              <svg className="bi pe-none me-2" width="16" height="16">
-                <use xlinkHref="#grid"></use>
-              </svg>
-              Products
+          <li onClick={()=>handleTabButtonClick("Settings")}>
+            <a href="#" className={`nav-link text-white ${selectedTab ==="Settings" && "active"}`} >
+              Settings
             </a>
           </li>
-          <li>
-            <a href="#" className="nav-link text-white">
-              <svg className="bi pe-none me-2" width="16" height="16">
-                <use xlinkHref="#people-circle"></use>
-              </svg>
-              Customers
-            </a>
-          </li>
-          <li className="nav-item">
-            <a href="#" className="nav-link active" aria-current="page">
-              <svg className="bi pe-none me-2" width="16" height="16">
-                <use xlinkHref="#home"></use>
-              </svg>
-              Home
-            </a>
-          </li>
-          <li>
-            <a href="#" className="nav-link text-white">
-              <svg className="bi pe-none me-2" width="16" height="16">
-                <use xlinkHref="#speedometer2"></use>
-              </svg>
-              Dashboard
-            </a>
-          </li>
-          <li>
-            <a href="#" className="nav-link text-white">
-              <svg className="bi pe-none me-2" width="16" height="16">
-                <use xlinkHref="#table"></use>
-              </svg>
-              Orders
-            </a>
-          </li>
-          <li>
-            <a href="#" className="nav-link text-white">
-              <svg className="bi pe-none me-2" width="16" height="16">
-                <use xlinkHref="#grid"></use>
-              </svg>
-              Products
-            </a>
-          </li>
-          <li>
-            <a href="#" className="nav-link text-white">
-              <svg className="bi pe-none me-2" width="16" height="16">
-                <use xlinkHref="#people-circle"></use>
-              </svg>
-              Customers
+          <li onClick={()=>handleTabButtonClick("Create Post")}>
+            <a href="#" className={`nav-link text-white ${selectedTab ==="Create Post" && "active"}`} >
+              Create Post
             </a>
           </li>
         </ul>
@@ -122,25 +68,25 @@ const LeftSidebar = () => {
             <strong>mdo</strong>
           </a>
           <ul className="dropdown-menu dropdown-menu-dark text-small shadow">
-            <li>
+            <li onClick={()=>handleTabButtonClick("")}>
               <a className="dropdown-item" href="#">
                 New project...
               </a>
             </li>
-            <li>
+            <li onClick={()=>handleTabButtonClick("")}>
               <a className="dropdown-item" href="#">
                 Settings
               </a>
             </li>
-            <li>
+            <li onClick={()=>handleTabButtonClick("")}>
               <a className="dropdown-item" href="#">
                 Profile
               </a>
             </li>
-            <li>
+            <li onClick={()=>handleTabButtonClick("")}>
               <hr className="dropdown-divider" />
             </li>
-            <li>
+            <li onClick={()=>handleTabButtonClick("")}>
               <a className="dropdown-item" href="#">
                 Sign out
               </a>
