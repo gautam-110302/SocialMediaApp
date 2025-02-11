@@ -5,7 +5,7 @@ import Home from "./Home";
 import RightSidebar from "./RightSidebar";
 import Settings from "./Settings";
 
-const Content = ({selectedTab}) => {
+const Content = ({ selectedTab }) => {
   return (
     <div
       className="d-flex flex-row overflow-y-scroll position-relative"
@@ -13,13 +13,18 @@ const Content = ({selectedTab}) => {
     >
       <div
         className="d-flex flex-column position-relative"
-        style={{ backgroundColor: "rgb(33, 37, 41)", height: "100vh", width: "50vw" }}
+        style={{
+          backgroundColor: "rgb(33, 37, 41)",
+          height: "calc(100vh - 10px)",
+          width: "50vw",
+          paddingBottom: "10px",
+        }}
       >
-        {selectedTab ==="Home" && <Home />}
-        {selectedTab ==="Explore" && <Explore />}
-        {selectedTab ==="Settings" && <Settings />}
-        {selectedTab ==="Bookmarks" && <Bookmarks />}
-        {selectedTab ==="Create Post" && <CreatePost />}
+        {selectedTab === "Home" && <Home />}
+        {selectedTab === "Explore" && <Explore />}
+        {selectedTab === "Settings" && <Settings />}
+        {selectedTab === "Bookmarks" && <Bookmarks />}
+        {selectedTab === "Create Post" && <CreatePost />}
       </div>
       <RightSidebar></RightSidebar>
     </div>

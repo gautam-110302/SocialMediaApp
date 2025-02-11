@@ -1,22 +1,44 @@
-import { useState } from "react";
+import { useContext, useRef, useState } from "react";
+import { PostList } from "../store/PostList";
 
 const CreatePost = () => {
-  const handlePostButtonClick = (event) => {
-    console.log(event);
+  const { addPost } = useContext(PostList);
+  const textInputElement = useRef();
+  const imageInputElement = useRef();
+  const [image, setImage] = useState(null);
+
+  const handlePostButtonClick = () => {
+    if (textInputElement.current.value === "" && image === null) {
+      return;
+    }
+
+    let newPostData = {
+      caption: textInputElement.current.value,
+      imageFile: image,
+      key: uuidv4(),
+    };
+
+    addPost(newPostData);
+
+    textInputElement.current.value = "";
+    setImage(null);
+    imageInputElement.current.value = "";
   };
 
-  const [showImage, setShowImage] = useState(false);
-
-  const handleClose = () => {
-    setShowImage(false);
+  const handleImageInputChange = () => {
+    const file = imageInputElement.current.files[0];
+    console.log(file);
+    if (file) {
+      setImage(file);
+    }
   };
 
-  const handleShow = () => {
-    setShowImage(true);
+  const handleRemoveButton = () => {
+    setImage(null);
+    imageInputElement.current.value = "";
   };
 
   return (
-  
     <>
       <div
         className="card border border-light"
@@ -37,20 +59,27 @@ const CreatePost = () => {
               className="form-control"
               id="exampleFormControlTextarea1"
               rows="8"
+              ref={textInputElement}
             ></textarea>
           </div>
-          <button onClick={handleShow}>Choose picture</button>
-          {showImage && (
+          <div className="mb-3">
+            <label htmlFor="formFile" className="form-label">
+              Select photo
+            </label>
+            <input
+              className="form-control"
+              type="file"
+              id="formFile"
+              onChange={handleImageInputChange}
+              ref={imageInputElement}
+            />
+          </div>
+          {image && (
             <>
-            <button className = "btn btn-danger float-end" onClick={handleClose}>Close</button>
-            <div className="mb-3">
-              <label htmlFor="formFile" className="form-label">
-               Select photo
-              </label>
-              <input className="form-control" type="file" id="formFile" />
-            </div>
-            </>)
-          }
+              <button onClick={handleRemoveButton}>Remove picture</button>
+            </>
+          )}
+          <br />
           <button
             type="button"
             className="btn btn-primary float-end"
