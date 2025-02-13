@@ -7,21 +7,10 @@ import { FaBookmark } from "react-icons/fa";
 import { PostList } from "../store/PostList";
 
 const PostFooter = ({ postData }) => {
-
-  let {handleLikes, handleBookmarks } = useContext(PostList)
-  let [isLikeButtonClicked, setLikeButtonClicked] = useState(false);
-  const handleLikeButtonClick = () => {
-    let likeButtonState = !isLikeButtonClicked;
-    setLikeButtonClicked(likeButtonState);
-    handleLikes(postData.key, likeButtonState);
-  };
-
-  let [isBookmarkButtonClicked, setBookmarkButtonClicked] = useState(false);
-  const handleBookmarkButtonClick = () => {
-    let bookmarkButtonState = !isBookmarkButtonClicked;
-    setBookmarkButtonClicked(bookmarkButtonState);
-    handleBookmarks(postData.key, bookmarkButtonState);
-  };
+  let {
+    handleLikeButtonClick,
+    handleBookmarkButtonClick,
+  } = useContext(PostList);
 
   const handleCommentButtonClick = () => {};
 
@@ -31,10 +20,10 @@ const PostFooter = ({ postData }) => {
         type="button"
         className="btn btn-dark border border-secondary"
         style={{ width: "33%" }}
-        onClick={handleLikeButtonClick}
+        onClick={()=>handleLikeButtonClick(postData.key)}
       >
-        {!isLikeButtonClicked && <AiOutlineLike />}
-        {isLikeButtonClicked && <AiFillLike />}
+        {!postData.likeState && <AiOutlineLike />}
+        {postData.likeState && <AiFillLike />}
         {postData.likes}
       </button>
       <button
@@ -50,10 +39,10 @@ const PostFooter = ({ postData }) => {
         type="button"
         className="btn btn-dark border border-secondary"
         style={{ width: "33%" }}
-        onClick={handleBookmarkButtonClick}
+        onClick={()=>handleBookmarkButtonClick(postData.key)}
       >
-        {!isBookmarkButtonClicked && <FaRegBookmark />}
-        {isBookmarkButtonClicked && <FaBookmark />}
+        {!postData.bookmarkState && <FaRegBookmark />}
+        {postData.bookmarkState && <FaBookmark />}
         {postData.bookmarks}
       </button>
     </div>

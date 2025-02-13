@@ -3,7 +3,7 @@ import { PostList } from "../store/PostList";
 import Post from "./Post";
 
 const Bookmarks = () => {
-  const {bookmarksList} = useContext(PostList);
+  const {bookmarksList} = useContext(PostList); 
   return (
     <>
       <div className={`position-sticky top-0 start-0`}>
@@ -21,7 +21,7 @@ const Bookmarks = () => {
       >
         {bookmarksList.map((postData)=>{
           return(
-            <Post key={postData.key} postData={postData}></Post>
+            <Post key={postData.key + "h13vh"} postData={postData}></Post>
           )
         })}
       </div>

@@ -17,8 +17,10 @@ const CreatePost = () => {
       imageFile: image,
       likes: 0,
       comments: [],
-      bookmarks : 0,
+      bookmarks: 0,
       key: uuidv4(),
+      likeState: false,
+      bookmarkState: false,
     };
 
     addPost(newPostData);
