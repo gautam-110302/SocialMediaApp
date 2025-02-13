@@ -23,7 +23,7 @@ const Post = ({postData}) => {
           <p className="card-text">
             {postData.caption}
           </p>
-          <PostFooter></PostFooter>
+          <PostFooter postData={postData}></PostFooter>
         </div>
       </div>
     </>

@@ -15,6 +15,9 @@ const CreatePost = () => {
     let newPostData = {
       caption: textInputElement.current.value,
       imageFile: image,
+      likes: 0,
+      comments: [],
+      bookmarks : 0,
       key: uuidv4(),
     };
 

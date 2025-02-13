@@ -34,11 +34,6 @@ const LeftSidebar = ({selectedTab, handleTabButtonClick}) => {
               Bookmarks
             </a>
           </li>
-          <li onClick={()=>handleTabButtonClick("Settings")}>
-            <a href="#" className={`nav-link text-white ${selectedTab ==="Settings" && "active"}`} >
-              Settings
-            </a>
-          </li>
           <li onClick={()=>handleTabButtonClick("Create Post")}>
             <a href="#" className={`nav-link text-white ${selectedTab ==="Create Post" && "active"}`} >
               Create Post

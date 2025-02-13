@@ -7,7 +7,7 @@ import { useState } from "react";
 const Body = () => {
   let [selectedTab,setSelectedTab] = useState("Home");
   const onTabButtonClick = (buttonPressed)=>{
-    console.log("check")
+    console.log("check");
     setSelectedTab(buttonPressed);
   }
 

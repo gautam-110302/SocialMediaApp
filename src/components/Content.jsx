@@ -3,7 +3,6 @@ import CreatePost from "./CreatePost";
 import Explore from "./Explore";
 import Home from "./Home";
 import RightSidebar from "./RightSidebar";
-import Settings from "./Settings";
 
 const Content = ({ selectedTab }) => {
   return (
@@ -22,7 +21,6 @@ const Content = ({ selectedTab }) => {
       >
         {selectedTab === "Home" && <Home />}
         {selectedTab === "Explore" && <Explore />}
-        {selectedTab === "Settings" && <Settings />}
         {selectedTab === "Bookmarks" && <Bookmarks />}
         {selectedTab === "Create Post" && <CreatePost />}
       </div>
