@@ -4,14 +4,26 @@ import { v4 as uuidv4 } from "uuid";
 export const PostList = createContext({
   postList: [],
   bookmarksList: [],
+  profileData: {},
   addPost: () => {},
   deletePost: () => {},
   handleLikeButtonClick: () => {},
   handleBookmarkButtonClick: () => {},
 });
 
+const DEFAULT_PROFILE_DATA = {
+  name: "ReactUser1",
+  username: "react0001",
+  imageFile: "/public/dog.png",
+};
+
 const DEFAULT_POST_LIST = [
   {
+    profileData: {
+      name: "ReactUser2",
+      username: "react0002",
+      imageFile: "/public/cat.png",
+    },
     caption: "React1",
     imageFile: "/public/react.png",
     likes: 45,
@@ -22,6 +34,11 @@ const DEFAULT_POST_LIST = [
     bookmarkState: false,
   },
   {
+    profileData: {
+      name: "ReactUser2",
+      username: "react0002",
+      imageFile: "/public/cat.png",
+    },
     caption: "React2",
     imageFile: "/public/react.png",
     likes: 145,
@@ -32,6 +49,11 @@ const DEFAULT_POST_LIST = [
     bookmarkState: false,
   },
   {
+    profileData: {
+      name: "ReactUser2",
+      username: "react0002",
+      imageFile: "/public/cat.png",
+    },
     caption: "React3",
     imageFile: "/public/react.png",
     likes: 24,
@@ -42,6 +64,8 @@ const DEFAULT_POST_LIST = [
     bookmarkState: false,
   },
 ];
+
+function profileDataReducer(currProfileData, action) {}
 
 function postListReducer(currPostList, action) {
   let newPostList = [...currPostList];
@@ -80,82 +104,16 @@ function postListReducer(currPostList, action) {
   return newPostList;
 }
 
-function bookmarkListReducer(currBookmarkList, action) {
-  let newBookmarkList = [...currBookmarkList];
-  if (action.type === "ADD_ITEM") {
-    const existingPostIndex = newBookmarkList.findIndex(
-      (post) => post.key === action.payload.key
-    );
-
-    if (existingPostIndex === -1) {
-      newBookmarkList = [action.payload, ...newBookmarkList];
-    } else {
-      newBookmarkList[existingPostIndex] = {
-        ...newBookmarkList[existingPostIndex],
-        likes: action.payload.likes,
-        likeState: action.payload.likeState,
-      };
-    }
-    // storePostList(newBookmarkList);
-  } else if (action.type === "DELETE_ITEM") {
-    newBookmarkList = newBookmarkList.filter(
-      (item) => item.key !== action.payload
-    );
-    // storePostList(newBookmarkList);
-  } else if (action.type === "CHANGE_LIKES") {
-    const existingPostIndex = newBookmarkList.findIndex(
-      (post) => post.key === action.payload.key
-    );
-
-    if (existingPostIndex !== -1) {
-      newBookmarkList[existingPostIndex] = {
-        ...newBookmarkList[existingPostIndex],
-        likes: action.payload.likes,
-        likeState: action.payload.likeState,
-      };
-    }
-  }
-  // else if (action.type === "RENDER_STORED_ITEM") {
-  //   newBookmarkList = action.payload;
-  // }
-  return newBookmarkList;
-}
-
 const PostListProvider = ({ children }) => {
   let [postList, dispatchPostList] = useReducer(
     postListReducer,
     DEFAULT_POST_LIST
   );
 
-  let [bookmarksList, dispatchBookmarksList] = useReducer(
-    bookmarkListReducer,
-    []
+  let [profileData, dispatchProfileData] = useReducer(
+    profileDataReducer,
+    DEFAULT_PROFILE_DATA
   );
-
-  const handleBookmarksList = (key) => {
-    const bookmarkData = postList.find((post) => post.key === key);
-    if (bookmarkData) {
-      bookmarkData.bookmarkState
-        ? addBookmark(bookmarkData)
-        : deleteBookmark(key);
-    }
-  };
-
-  const addBookmark = (bookmarkData) => {
-    const newPostAction = {
-      type: "ADD_ITEM",
-      payload: bookmarkData,
-    };
-    dispatchBookmarksList(newPostAction);
-  };
-
-  const deleteBookmark = (keyToDelete) => {
-    const deletePostAction = {
-      type: "DELETE_ITEM",
-      payload: keyToDelete,
-    };
-    dispatchBookmarksList(deletePostAction);
-  };
 
   const addPost = (newPostData) => {
     const newPostAction = {
@@ -173,36 +131,13 @@ const PostListProvider = ({ children }) => {
     dispatchPostList(deletePostAction);
   };
 
-  const [lastLikedKey, setLastLikedKey] = useState(null);
-
-  useEffect(() => {
-    if (lastLikedKey) {
-      const updatedPost = postList.find((post) => post.key === lastLikedKey);
-      const handleLikeChangeAction = {
-        type: "CHANGE_LIKES",
-        payload: updatedPost,
-      };
-      dispatchBookmarksList(handleLikeChangeAction);
-    }
-  }, [postList, lastLikedKey]);
-
   const handleLikeButtonClick = (key) => {
     const handleLikesAction = {
       type: "HANDLE_LIKES",
       payload: key,
     };
     dispatchPostList(handleLikesAction);
-    setLastLikedKey(key); // Track the key of the liked post
   };
-
-  const [lastBookmarkedKey, setLastBookmarkedKey] = useState(null);
-
-  useEffect(() => {
-    if (lastBookmarkedKey) {
-      const post = postList.find((post) => post.key === lastBookmarkedKey);
-      handleBookmarksList(lastBookmarkedKey);
-    }
-  }, [postList, lastBookmarkedKey]);
 
   const handleBookmarkButtonClick = (key) => {
     const handleBookmarksAction = {
@@ -210,14 +145,13 @@ const PostListProvider = ({ children }) => {
       payload: key,
     };
     dispatchPostList(handleBookmarksAction);
-    setLastBookmarkedKey(key); // Track the key after dispatch
   };
 
   return (
     <PostList.Provider
       value={{
         postList,
-        bookmarksList,
+        profileData,
         addPost,
         deletePost,
         handleLikeButtonClick,

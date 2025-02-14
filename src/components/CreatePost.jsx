@@ -1,18 +1,22 @@
 import { useContext, useRef, useState } from "react";
 import { PostList } from "../store/PostList";
+import { v4 as uuidv4 } from "uuid";
 
 const CreatePost = () => {
-  const { addPost } = useContext(PostList);
+  const { addPost, profileData } = useContext(PostList);
   const textInputElement = useRef();
   const imageInputElement = useRef();
   const [image, setImage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handlePostButtonClick = () => {
     if (textInputElement.current.value === "" && image === null) {
+      setErrorMessage("Please add text or an image to your post.");
       return;
     }
 
     let newPostData = {
+      profileData: profileData,
       caption: textInputElement.current.value,
       imageFile: image,
       likes: 0,
@@ -23,18 +27,21 @@ const CreatePost = () => {
       bookmarkState: false,
     };
 
+    console.log(newPostData);
     addPost(newPostData);
 
     textInputElement.current.value = "";
     setImage(null);
     imageInputElement.current.value = "";
+    setErrorMessage("");
   };
 
   const handleImageInputChange = () => {
     const file = imageInputElement.current.files[0];
-    console.log(file);
+    
     if (file) {
-      setImage(file);
+      const imageUrl = URL.createObjectURL(file);
+      setImage(imageUrl);
     }
   };
 
@@ -54,8 +61,21 @@ const CreatePost = () => {
         }}
       >
         <div className="card-body">
-          <h5 className="card-title">{`Name`}</h5>
-          <h6 className="card-subtitle mb-2 text-light">{`@username`}</h6>
+          <div className="d-flex flex-row align-items-center">
+            <div>
+              <img
+                src={profileData.imageFile}
+                alt=""
+                width="50"
+                height="50"
+                className="rounded-circle me-2"
+              />
+            </div>
+            <div>
+              <h5 className="card-title">{profileData.name}</h5>
+              <h6 className="card-subtitle mb-2 text-light">{`@${profileData.username}`}</h6>
+            </div>
+          </div>
           <div className="mb-3">
             <label htmlFor="exampleFormControlTextarea1" className="form-label">
               What's new?
@@ -81,8 +101,19 @@ const CreatePost = () => {
           </div>
           {image && (
             <>
-              <button onClick={handleRemoveButton}>Remove picture</button>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={handleRemoveButton}
+              >
+                Remove picture
+              </button>
             </>
+          )}
+          {errorMessage && (
+            <div className="alert alert-danger" role="alert">
+              {errorMessage}
+            </div>
           )}
           <br />
           <button

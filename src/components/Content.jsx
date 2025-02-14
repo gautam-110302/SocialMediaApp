@@ -2,6 +2,7 @@ import Bookmarks from "./Bookmarks";
 import CreatePost from "./CreatePost";
 import Explore from "./Explore";
 import Home from "./Home";
+import Profile from "./Profile";
 import RightSidebar from "./RightSidebar";
 
 const Content = ({ selectedTab }) => {
@@ -23,6 +24,7 @@ const Content = ({ selectedTab }) => {
         {selectedTab === "Explore" && <Explore />}
         {selectedTab === "Bookmarks" && <Bookmarks />}
         {selectedTab === "Create Post" && <CreatePost />}
+        {selectedTab === "Profile" && <Profile />}
       </div>
       <RightSidebar></RightSidebar>
     </div>
