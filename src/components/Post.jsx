@@ -4,12 +4,11 @@ const Post = ({ postData }) => {
   return (
     <>
       <div
-        className="card border border-light"
+        className="card border border-secondary rounded-0"
         style={{
           width: "100%",
           backgroundColor: "rgb(33, 37, 41)",
           color: "white",
-          marginBottom: "10px",
         }}
       >
         <div className="card-body">

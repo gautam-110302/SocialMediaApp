@@ -53,12 +53,7 @@ const CreatePost = () => {
   return (
     <>
       <div
-        className="card border border-light"
-        style={{
-          width: "100%",
-          backgroundColor: "rgb(33, 37, 41)",
-          color: "white",
-        }}
+        className="card border border-light w-100 text-white background-color"
       >
         <div className="card-body">
           <div className="d-flex flex-row align-items-center">

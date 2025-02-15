@@ -1,0 +1,23 @@
+.background-color{
+  background-color: rgb(33, 37, 41) !important;
+}
+
+.w-280px {
+  width: 280px;
+}
+
+.vh-20{
+  height: 20vh;
+}
+
+.vw-25 {
+  width: 25vw;
+}
+
+.vh-10{
+  height: 10vh;
+}
+
+.vw-50 {
+  width: 50vw;
+}

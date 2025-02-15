@@ -7,19 +7,8 @@ import RightSidebar from "./RightSidebar";
 
 const Content = ({ selectedTab }) => {
   return (
-    <div
-      className="d-flex flex-row overflow-y-scroll position-relative"
-      style={{ backgroundColor: "rgb(33, 37, 41)" }}
-    >
-      <div
-        className="d-flex flex-column position-relative"
-        style={{
-          backgroundColor: "rgb(33, 37, 41)",
-          height: "calc(100vh - 10px)",
-          width: "50vw",
-          paddingBottom: "10px",
-        }}
-      >
+    <div className="d-flex flex-row overflow-y-scroll position-relative background-color">
+      <div className="d-flex flex-column position-relative background-color vh-100 vw-50">
         {selectedTab === "Home" && <Home />}
         {selectedTab === "Explore" && <Explore />}
         {selectedTab === "Bookmarks" && <Bookmarks />}

@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { PostList } from "../store/PostList";
 import Post from "./Post";
+import PostsButton from "./PostsButton";
 
 const Bookmarks = () => {
   const { postList } = useContext(PostList);
@@ -10,19 +11,8 @@ const Bookmarks = () => {
 
   return (
     <>
-      <div className={`position-sticky top-0 start-0`}>
-        <button
-          type="button"
-          className="btn btn-dark w-100"
-          style={{ height: "10vh", zIndex: 1000 }}
-        >
-          Posts
-        </button>
-      </div>
-      <div
-        className="position-sticky"
-        style={{ height: "calc(100% - 10vh - 10px)", paddingBottom: "10px" }}
-      >
+      <PostsButton></PostsButton>
+      <div className="position-sticky">
         {bookmarkedPosts.length > 0 ? (
           bookmarkedPosts.map((postData) => (
             <Post key={postData.key} postData={postData} />
