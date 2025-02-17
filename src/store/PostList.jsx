@@ -9,6 +9,7 @@ export const PostList = createContext({
   deletePost: () => {},
   handleLikeButtonClick: () => {},
   handleBookmarkButtonClick: () => {},
+  addDefaultPosts: ()=>{},
 });
 
 const DEFAULT_PROFILE_DATA = {
@@ -17,53 +18,53 @@ const DEFAULT_PROFILE_DATA = {
   imageFile: "/public/dog.png",
 };
 
-const DEFAULT_POST_LIST = [
-  {
-    profileData: {
-      name: "ReactUser2",
-      username: "react0002",
-      imageFile: "/public/cat.png",
-    },
-    caption: "React1",
-    imageFile: "/public/react.png",
-    likes: 45,
-    comments: [],
-    bookmarks: 12,
-    key: uuidv4(),
-    likeState: false,
-    bookmarkState: false,
-  },
-  {
-    profileData: {
-      name: "ReactUser2",
-      username: "react0002",
-      imageFile: "/public/cat.png",
-    },
-    caption: "React2",
-    imageFile: "/public/react.png",
-    likes: 145,
-    comments: [],
-    bookmarks: 22,
-    key: uuidv4(),
-    likeState: false,
-    bookmarkState: false,
-  },
-  {
-    profileData: {
-      name: "ReactUser2",
-      username: "react0002",
-      imageFile: "/public/cat.png",
-    },
-    caption: "React3",
-    imageFile: "/public/react.png",
-    likes: 24,
-    comments: [],
-    bookmarks: 2,
-    key: uuidv4(),
-    likeState: false,
-    bookmarkState: false,
-  },
-];
+// const DEFAULT_POST_LIST = [
+//   {
+//     profileData: {
+//       name: "ReactUser2",
+//       username: "react0002",
+//       imageFile: "/public/cat.png",
+//     },
+//     caption: "React1",
+//     imageFile: "/public/react.png",
+//     likes: 45,
+//     comments: [],
+//     bookmarks: 12,
+//     key: uuidv4(),
+//     likeState: false,
+//     bookmarkState: false,
+//   },
+//   {
+//     profileData: {
+//       name: "ReactUser2",
+//       username: "react0002",
+//       imageFile: "/public/cat.png",
+//     },
+//     caption: "React2",
+//     imageFile: "/public/react.png",
+//     likes: 145,
+//     comments: [],
+//     bookmarks: 22,
+//     key: uuidv4(),
+//     likeState: false,
+//     bookmarkState: false,
+//   },
+//   {
+//     profileData: {
+//       name: "ReactUser2",
+//       username: "react0002",
+//       imageFile: "/public/cat.png",
+//     },
+//     caption: "React3",
+//     imageFile: "/public/react.png",
+//     likes: 24,
+//     comments: [],
+//     bookmarks: 2,
+//     key: uuidv4(),
+//     likeState: false,
+//     bookmarkState: false,
+//   },
+// ];
 
 function profileDataReducer(currProfileData, action) {}
 
@@ -98,16 +99,30 @@ function postListReducer(currPostList, action) {
         : post
     );
   }
-  // else if (action.type === "RENDER_STORED_ITEM") {
-  //   newPostList = action.payload;
-  // }
+  else if (action.type === "ADD_DEFAULT_ITEMS") {
+    newPostList = action.payload.map((postData) => ({
+      profileData: {
+        name: `ReactUser${postData.userId}`,
+        username: postData.userId,
+        imageFile: "/public/cat.png",
+      },
+      caption: postData.body,
+      imageFile: "",
+      likes: postData.reactions.likes,
+      comments: [],
+      bookmarks: postData.reactions.dislikes,
+      key: uuidv4(),
+      likeState: false,
+      bookmarkState: false,
+    }));
+ }
   return newPostList;
 }
 
 const PostListProvider = ({ children }) => {
   let [postList, dispatchPostList] = useReducer(
     postListReducer,
-    DEFAULT_POST_LIST
+    []
   );
 
   let [profileData, dispatchProfileData] = useReducer(
@@ -130,6 +145,15 @@ const PostListProvider = ({ children }) => {
     };
     dispatchPostList(deletePostAction);
   };
+
+  const addDefaultPosts=(defaultPostData)=>{
+    const defaultPostAction = {
+      type: "ADD_DEFAULT_ITEMS",
+      payload: defaultPostData,
+    };
+    dispatchPostList(defaultPostAction);
+  }
+
 
   const handleLikeButtonClick = (key) => {
     const handleLikesAction = {
@@ -156,6 +180,7 @@ const PostListProvider = ({ children }) => {
         deletePost,
         handleLikeButtonClick,
         handleBookmarkButtonClick,
+        addDefaultPosts,
       }}
     >
       {children}
