@@ -5,11 +5,11 @@ export const PostList = createContext({
   postList: [],
   bookmarksList: [],
   profileData: {},
+  fetchState: false,
   addPost: () => {},
   deletePost: () => {},
   handleLikeButtonClick: () => {},
   handleBookmarkButtonClick: () => {},
-  addDefaultPosts: ()=>{},
 });
 
 const DEFAULT_PROFILE_DATA = {
@@ -154,6 +154,21 @@ const PostListProvider = ({ children }) => {
     dispatchPostList(defaultPostAction);
   }
 
+  const [fetchState, setFetchState] = useState(false);
+
+  useEffect(() => {
+    setFetchState(true);
+    fetch("https://dummyjson.com/posts")
+      .then((res) => res.json())
+      .then((data) => {
+        addDefaultPosts(data.posts);
+        setFetchState(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching posts:", error);
+        setFetchState(false);
+      });
+  }, []);
 
   const handleLikeButtonClick = (key) => {
     const handleLikesAction = {
@@ -176,11 +191,11 @@ const PostListProvider = ({ children }) => {
       value={{
         postList,
         profileData,
+        fetchState,
         addPost,
         deletePost,
         handleLikeButtonClick,
         handleBookmarkButtonClick,
-        addDefaultPosts,
       }}
     >
       {children}

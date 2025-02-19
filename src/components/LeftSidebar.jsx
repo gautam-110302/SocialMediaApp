@@ -1,9 +1,15 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { PostList } from "../store/PostList";
 import { LuTwitter } from "react-icons/lu";
+import { Link } from "react-router-dom";
 
-const LeftSidebar = ({ selectedTab, handleTabButtonClick }) => {
+
+const LeftSidebar = () => {
   const { profileData } = useContext(PostList);
+  let [selectedTab, setSelectedTab] = useState("Home");
+  const handleTabButtonClick = (tab) => {
+    setSelectedTab(tab);
+  };
 
   return (
     <div
@@ -12,18 +18,18 @@ const LeftSidebar = ({ selectedTab, handleTabButtonClick }) => {
       <div
         className={`d-flex flex-column flex-shrink-0 p-3 text-bg-dark w-280px h-75`}
       >
-        <a
-          href="/"
+        <Link
+          to="/"
           className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
         >
-          <span className="fs-4">
+          <span className="fs-4" onClick={() => handleTabButtonClick("Home")}>
             <LuTwitter />
             Twitter
           </span>
-        </a>
+        </Link>
         <hr />
         <ul className="nav nav-pills flex-column mb-auto">
-          <a href="#" className="text-decoration-none">
+          <Link to="/" className="text-decoration-none">
             <li
               className={`nav-link text-white ${
                 selectedTab === "Home" && "active"
@@ -32,8 +38,8 @@ const LeftSidebar = ({ selectedTab, handleTabButtonClick }) => {
             >
               Home
             </li>
-          </a>
-          <a href="#" className="text-decoration-none">
+          </Link>
+          <Link to="/explore" className="text-decoration-none">
             <li
               className={`nav-link text-white ${
                 selectedTab === "Explore" && "active"
@@ -42,8 +48,8 @@ const LeftSidebar = ({ selectedTab, handleTabButtonClick }) => {
             >
               Explore
             </li>
-          </a>
-          <a href="#" className="text-decoration-none">
+          </Link>
+          <Link to="/bookmarks" className="text-decoration-none">
             <li
               className={`nav-link text-white ${
                 selectedTab === "Bookmarks" && "active"
@@ -52,8 +58,8 @@ const LeftSidebar = ({ selectedTab, handleTabButtonClick }) => {
             >
               Bookmarks
             </li>
-          </a>
-          <a href="#" className="text-decoration-none">
+          </Link>
+          <Link to="/create-post" className="text-decoration-none">
             <li
               className={`nav-link text-white ${
                 selectedTab === "Create Post" && "active"
@@ -62,14 +68,12 @@ const LeftSidebar = ({ selectedTab, handleTabButtonClick }) => {
             >
               Create Post
             </li>
-          </a>
+          </Link>
         </ul>
       </div>
-      <div
-        className={`d-flex flex-column justify-content-end w-280px vh-20`}
-      >
+      <div className={`d-flex flex-column justify-content-end w-280px vh-20`}>
         <hr />
-        <a href="#" className="text-decoration-none">
+        <Link to="/profile" className="text-decoration-none">
           <div
             className="d-flex text-white text-decoration-none align-items-center "
             onClick={() => handleTabButtonClick("Profile")}
@@ -83,7 +87,7 @@ const LeftSidebar = ({ selectedTab, handleTabButtonClick }) => {
             />
             <strong>{profileData.name}</strong>
           </div>
-        </a>
+        </Link>
       </div>
     </div>
   );

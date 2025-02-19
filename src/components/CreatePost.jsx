@@ -1,6 +1,7 @@
 import { useContext, useRef, useState } from "react";
 import { PostList } from "../store/PostList";
 import { v4 as uuidv4 } from "uuid";
+import { useNavigate } from "react-router-dom";
 
 const CreatePost = () => {
   const { addPost, profileData } = useContext(PostList);
@@ -8,6 +9,7 @@ const CreatePost = () => {
   const imageInputElement = useRef();
   const [image, setImage] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
+  const navigator = useNavigate();
 
   const handlePostButtonClick = () => {
     if (textInputElement.current.value === "" && image === null) {
@@ -34,6 +36,7 @@ const CreatePost = () => {
     setImage(null);
     imageInputElement.current.value = "";
     setErrorMessage("");
+    navigator("/");
   };
 
   const handleImageInputChange = () => {
@@ -79,6 +82,7 @@ const CreatePost = () => {
               className="form-control"
               id="exampleFormControlTextarea1"
               rows="8"
+              placeholder="what's going on?"
               ref={textInputElement}
             ></textarea>
           </div>
