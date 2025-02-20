@@ -2,23 +2,23 @@ import { useContext } from "react";
 import { PostList } from "../store/PostList";
 import Post from "./Post";
 
-const Bookmarks = () => {
+const YourPosts = () => {
   const { postList } = useContext(PostList);
-  const bookmarkedPosts = postList.filter(
-    (postData) => postData.bookmarkState === true
+  const yourPosts = postList.filter(
+    (postData) => postData.yourPost === true
   );
 
   return (
     <>
       <div className="position-sticky">
-        {bookmarkedPosts.length > 0 ? (
-          bookmarkedPosts.map((postData) => (
+        {yourPosts.length > 0 ? (
+          yourPosts.map((postData) => (
             <Post key={postData.key} postData={postData} />
           ))
         ) : (
           <div className="text-center mt-5">
             <div className="alert alert-light" role="alert">
-              No bookmarked posts yet.
+              No posts yet.
             </div>
           </div>
         )}
@@ -27,4 +27,4 @@ const Bookmarks = () => {
   );
 };
 
-export default Bookmarks;
+export default YourPosts;

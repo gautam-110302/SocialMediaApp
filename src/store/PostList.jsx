@@ -15,6 +15,7 @@ export const PostList = createContext({
 const DEFAULT_PROFILE_DATA = {
   name: "ReactUser1",
   username: "react0001",
+  bio: ".",
   imageFile: "/public/dog.png",
 };
 
@@ -98,8 +99,7 @@ function postListReducer(currPostList, action) {
           }
         : post
     );
-  }
-  else if (action.type === "ADD_DEFAULT_ITEMS") {
+  } else if (action.type === "ADD_DEFAULT_ITEMS") {
     newPostList = action.payload.map((postData) => ({
       profileData: {
         name: `ReactUser${postData.userId}`,
@@ -114,6 +114,7 @@ function postListReducer(currPostList, action) {
       key: uuidv4(),
       likeState: false,
       bookmarkState: false,
+      yourPost: false,
     }));
  }
   return newPostList;

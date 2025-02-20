@@ -27,6 +27,7 @@ const CreatePost = () => {
       key: uuidv4(),
       likeState: false,
       bookmarkState: false,
+      yourPost: true,
     };
 
     console.log(newPostData);
@@ -41,7 +42,7 @@ const CreatePost = () => {
 
   const handleImageInputChange = () => {
     const file = imageInputElement.current.files[0];
-    
+
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setImage(imageUrl);
@@ -55,9 +56,7 @@ const CreatePost = () => {
 
   return (
     <>
-      <div
-        className="card border border-light w-100 text-white background-color"
-      >
+      <div className="card border border-light w-100 text-white background-color">
         <div className="card-body">
           <div className="d-flex flex-row align-items-center">
             <div>

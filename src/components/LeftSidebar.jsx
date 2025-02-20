@@ -49,7 +49,7 @@ const LeftSidebar = () => {
               Explore
             </li>
           </Link>
-          <Link to="/bookmarks" className="text-decoration-none">
+          {/* <Link to="/bookmarks" className="text-decoration-none">
             <li
               className={`nav-link text-white ${
                 selectedTab === "Bookmarks" && "active"
@@ -58,7 +58,7 @@ const LeftSidebar = () => {
             >
               Bookmarks
             </li>
-          </Link>
+          </Link> */}
           <Link to="/create-post" className="text-decoration-none">
             <li
               className={`nav-link text-white ${
