@@ -1,6 +1,7 @@
 import { useEffect, useState, createContext, useReducer } from "react";
 import { v4 as uuidv4 } from "uuid";
 
+
 export const PostList = createContext({
   postList: [],
   bookmarksList: [],
@@ -10,6 +11,7 @@ export const PostList = createContext({
   deletePost: () => {},
   handleLikeButtonClick: () => {},
   handleBookmarkButtonClick: () => {},
+  editProfile: ()=>{},
 });
 
 const DEFAULT_PROFILE_DATA = {
@@ -67,7 +69,26 @@ const DEFAULT_PROFILE_DATA = {
 //   },
 // ];
 
-function profileDataReducer(currProfileData, action) {}
+function profileDataReducer(currProfileData, action) {
+  let newProfileData= {
+    name : currProfileData.name,
+    username : currProfileData.username,
+    bio : currProfileData.bio,
+    imageFile : currProfileData.imageFile,
+  };
+
+  if(action.type === "EDIT_PROFILE"){
+    newProfileData.name = action.payload.data.name;
+    newProfileData.bio = action.payload.data.bio;
+
+    if(action.payload.pictureChoice === "change"){
+      newProfileData.imageFile = action.payload.data.imageFile;
+    } else if(action.payload.pictureChoice === "delete"){
+      newProfileData.imageFile = "/public/userImage.png"
+    }
+  }
+  return newProfileData;
+}
 
 function postListReducer(currPostList, action) {
   let newPostList = [...currPostList];
@@ -130,6 +151,17 @@ const PostListProvider = ({ children }) => {
     profileDataReducer,
     DEFAULT_PROFILE_DATA
   );
+
+  const editProfile = (newProfileData,profilePictureChoice)=>{
+    const editProfileAction ={
+      type: "EDIT_PROFILE",
+      payload: {
+        data : newProfileData,
+        pictureChoice: profilePictureChoice,
+      }
+    }
+    dispatchProfileData(editProfileAction);
+  }
 
   const addPost = (newPostData) => {
     const newPostAction = {
@@ -197,6 +229,7 @@ const PostListProvider = ({ children }) => {
         deletePost,
         handleLikeButtonClick,
         handleBookmarkButtonClick,
+        editProfile,
       }}
     >
       {children}

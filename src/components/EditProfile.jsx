@@ -1,20 +1,33 @@
-import { useContext, useRef } from "react";
+import { useContext, useRef, useState } from "react";
 import { PostList } from "../store/PostList";
+import { useNavigate } from "react-router-dom";
 
 const EditProfile = ({ closeModal }) => {
-  const { profileData } = useContext(PostList);
+  const { profileData, editProfile } = useContext(PostList);
+  const navigator = useNavigate();
 
   const nameChanegBox = useRef();
   const bioChanegBox = useRef();
   const imageChangeBox = useRef();
 
+  const [profilePictureState, setProfilePictureState] = useState("");
+
   const handleSavechangesButton = () => {
+    
+    let imageUrl = "";
+    if (profilePictureState === "change") {
+      const file = imageChangeBox.current.files[0];
+      imageUrl = URL.createObjectURL(file);
+    }
     const profile = {
       name: nameChanegBox.current.value,
       bio: bioChanegBox.current.value,
-      imageFile : imageChangeBox.current.files[0],
+      imageFile: imageUrl,
     };
-    console.log(profile);
+    editProfile(profile,profilePictureState);
+    setProfilePictureState("");
+    closeModal();
+    navigator("/profile")
   };
 
   return (
@@ -61,16 +74,63 @@ const EditProfile = ({ closeModal }) => {
                     ref={bioChanegBox}
                   ></textarea>
                 </div>
-                <div className="mb-3">
-                  <label htmlFor="profileImage" className="form-label">
-                    Profile Image
-                  </label>
+                <div className="form-check">
                   <input
-                    type="file"
-                    className="form-control background-color text-white border-secondary"
-                    id="profileImage"
-                    ref={imageChangeBox}
+                    className="form-check-input"
+                    type="radio"
+                    name="flexRadioDefault"
+                    id="ProfilePictureChoice1"
+                    onClick={() => setProfilePictureState("change")}
                   />
+                  <label
+                    className="form-check-label"
+                    htmlFor="ProfilePictureChoice1"
+                  >
+                    Add new Profile Picture
+                  </label>
+                </div>
+                {profilePictureState === "change" && (
+                  <div className="mb-3">
+                    <label htmlFor="profileImage" className="form-label">
+                      Profile Image
+                    </label>
+                    <input
+                      type="file"
+                      className="form-control background-color text-white border-secondary"
+                      id="profileImage"
+                      ref={imageChangeBox}
+                    />
+                  </div>
+                )}
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="flexRadioDefault"
+                    id="ProfilePictureChoice2"
+                    onClick={() => setProfilePictureState("keep")}
+                  />
+                  <label
+                    className="form-check-label"
+                    htmlFor="ProfilePictureChoice2"
+                  >
+                    No change to Profile Picture
+                  </label>
+                </div>
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="flexRadioDefault"
+                    id="ProfilePictureChoice3"
+                    onClick={() => setProfilePictureState("delete")}
+                  />
+                  <label
+                    className="form-check-label"
+                    htmlFor="ProfilePictureChoice3"
+                  >
+                    Delete Profile Picture
+                  </label>
                 </div>
               </form>
             </div>
