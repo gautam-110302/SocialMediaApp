@@ -7,6 +7,7 @@ const CreatePost = () => {
   const { addPost, profileData } = useContext(PostList);
   const textInputElement = useRef();
   const imageInputElement = useRef();
+  const tagInputElement = useRef();
   const [image, setImage] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const navigator = useNavigate();
@@ -16,11 +17,16 @@ const CreatePost = () => {
       setErrorMessage("Please add text or an image to your post.");
       return;
     }
-
+    const tagArray = [];
+    if(tagInputElement.current.value !== ""){
+      tagArray = tagInputElement.current.value.split(" ");
+    }
+    console.log(tagArray.length);
     let newPostData = {
       profileData: profileData,
       caption: textInputElement.current.value,
       imageFile: image,
+      tags : tagArray,
       likes: 0,
       comments: [],
       bookmarks: 0,
@@ -113,6 +119,19 @@ const CreatePost = () => {
               {errorMessage}
             </div>
           )}
+          <div className="mb-3 py-2">
+            <label htmlFor="postTags" className="form-label">
+              Add Tags
+            </label>
+            <input
+              className="form-control"
+              type="text"
+              placeholder="ensure there is a space between each tag"
+              aria-label="default input example"
+              id="postTags"
+              ref={tagInputElement}
+            />
+          </div>
           <br />
           <button
             type="button"

@@ -35,6 +35,11 @@ const Post = ({ postData }) => {
             ></img>
           )}
           <p className="card-text">{postData.caption}</p>
+          <div className="d-flex">
+          {postData.tags.map((tag) => (
+            <button className="btn btn-primary p-2 m-1" key={tag}>{tag}</button>
+          ))}
+          </div>
           <PostFooter postData={postData}></PostFooter>
         </div>
       </div>

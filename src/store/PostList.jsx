@@ -1,7 +1,6 @@
 import { useEffect, useState, createContext, useReducer } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-
 export const PostList = createContext({
   postList: [],
   bookmarksList: [],
@@ -11,7 +10,8 @@ export const PostList = createContext({
   deletePost: () => {},
   handleLikeButtonClick: () => {},
   handleBookmarkButtonClick: () => {},
-  editProfile: ()=>{},
+  editProfile: () => {},
+  tagList: {},
 });
 
 const DEFAULT_PROFILE_DATA = {
@@ -70,24 +70,38 @@ const DEFAULT_PROFILE_DATA = {
 // ];
 
 function profileDataReducer(currProfileData, action) {
-  let newProfileData= {
-    name : currProfileData.name,
-    username : currProfileData.username,
-    bio : currProfileData.bio,
-    imageFile : currProfileData.imageFile,
+  let newProfileData = {
+    name: currProfileData.name,
+    username: currProfileData.username,
+    bio: currProfileData.bio,
+    imageFile: currProfileData.imageFile,
   };
 
-  if(action.type === "EDIT_PROFILE"){
+  if (action.type === "EDIT_PROFILE") {
     newProfileData.name = action.payload.data.name;
     newProfileData.bio = action.payload.data.bio;
 
-    if(action.payload.pictureChoice === "change"){
+    if (action.payload.pictureChoice === "change") {
       newProfileData.imageFile = action.payload.data.imageFile;
-    } else if(action.payload.pictureChoice === "delete"){
-      newProfileData.imageFile = "/public/userImage.png"
+    } else if (action.payload.pictureChoice === "delete") {
+      newProfileData.imageFile = "/public/userImage.png";
     }
   }
   return newProfileData;
+}
+
+function tagListReducer(currTagList, action) {
+  let newTagList = new Map(currTagList);
+  if (action.type === "ADD_TAGS") {
+    action.payload.forEach((tag) => {
+      if (newTagList.has(tag)) {
+        newTagList.set(tag, newTagList.get(tag) + 1);
+      } else {
+        newTagList.set(tag, 1);
+      }
+    });
+  }
+  return newTagList;
 }
 
 function postListReducer(currPostList, action) {
@@ -121,47 +135,56 @@ function postListReducer(currPostList, action) {
         : post
     );
   } else if (action.type === "ADD_DEFAULT_ITEMS") {
-    newPostList = action.payload.map((postData) => ({
-      profileData: {
-        name: `ReactUser${postData.userId}`,
-        username: postData.userId,
-        imageFile: "/public/cat.png",
-      },
-      caption: postData.body,
-      imageFile: "",
-      likes: postData.reactions.likes,
-      comments: [],
-      bookmarks: postData.reactions.dislikes,
-      key: uuidv4(),
-      likeState: false,
-      bookmarkState: false,
-      yourPost: false,
-    }));
- }
+    newPostList = action.payload.map((postData) => {
+      return {
+        profileData: {
+          name: `ReactUser${postData.userId}`,
+          username: postData.userId,
+          imageFile: "/public/cat.png",
+        },
+        caption: postData.body,
+        imageFile: "",
+        tags: postData.tags,
+        likes: postData.reactions.likes,
+        comments: [],
+        bookmarks: postData.reactions.dislikes,
+        key: uuidv4(),
+        likeState: false,
+        bookmarkState: false,
+        yourPost: false,
+      };
+    });
+  }
   return newPostList;
 }
 
 const PostListProvider = ({ children }) => {
-  let [postList, dispatchPostList] = useReducer(
-    postListReducer,
-    []
-  );
+  let [postList, dispatchPostList] = useReducer(postListReducer, []);
 
   let [profileData, dispatchProfileData] = useReducer(
     profileDataReducer,
     DEFAULT_PROFILE_DATA
   );
 
-  const editProfile = (newProfileData,profilePictureChoice)=>{
-    const editProfileAction ={
+  let [tagList, dispatchTagList] = useReducer(tagListReducer, new Map());
+
+  const addTags = (tags) => {
+    dispatchTagList({
+      type: "ADD_TAGS",
+      payload: tags,
+    });
+  };
+
+  const editProfile = (newProfileData, profilePictureChoice) => {
+    const editProfileAction = {
       type: "EDIT_PROFILE",
       payload: {
-        data : newProfileData,
+        data: newProfileData,
         pictureChoice: profilePictureChoice,
-      }
-    }
+      },
+    };
     dispatchProfileData(editProfileAction);
-  }
+  };
 
   const addPost = (newPostData) => {
     const newPostAction = {
@@ -169,6 +192,7 @@ const PostListProvider = ({ children }) => {
       payload: newPostData,
     };
     dispatchPostList(newPostAction);
+    addTags(newPostData.tags);
   };
 
   const deletePost = (keyToDelete) => {
@@ -179,13 +203,16 @@ const PostListProvider = ({ children }) => {
     dispatchPostList(deletePostAction);
   };
 
-  const addDefaultPosts=(defaultPostData)=>{
+  const addDefaultPosts = (defaultPostData) => {
     const defaultPostAction = {
       type: "ADD_DEFAULT_ITEMS",
       payload: defaultPostData,
     };
     dispatchPostList(defaultPostAction);
-  }
+    defaultPostData.forEach((postData) => {
+      addTags(postData.tags);
+    });
+  };
 
   const [fetchState, setFetchState] = useState(false);
 
@@ -230,6 +257,7 @@ const PostListProvider = ({ children }) => {
         handleLikeButtonClick,
         handleBookmarkButtonClick,
         editProfile,
+        tagList,
       }}
     >
       {children}
