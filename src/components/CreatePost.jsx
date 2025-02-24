@@ -79,25 +79,25 @@ const CreatePost = () => {
             </div>
           </div>
           <div className="mb-3">
-            <label htmlFor="exampleFormControlTextarea1" className="form-label">
+            <label htmlFor="postCaption" className="form-label">
               What's new?
             </label>
             <textarea
               className="form-control"
-              id="exampleFormControlTextarea1"
+              id="postCaption"
               rows="8"
               placeholder="what's going on?"
               ref={textInputElement}
             ></textarea>
           </div>
           <div className="mb-3">
-            <label htmlFor="formFile" className="form-label">
+            <label htmlFor="postPhoto" className="form-label">
               Select photo
             </label>
             <input
               className="form-control"
               type="file"
-              id="formFile"
+              id="postPhoto"
               onChange={handleImageInputChange}
               ref={imageInputElement}
             />

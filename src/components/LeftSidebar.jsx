@@ -1,8 +1,7 @@
 import { useContext, useState } from "react";
 import { PostList } from "../store/PostList";
-import { LuTwitter } from "react-icons/lu";
+import { TbSocial } from "react-icons/tb";
 import { Link } from "react-router-dom";
-
 
 const LeftSidebar = () => {
   const { profileData } = useContext(PostList);
@@ -23,8 +22,8 @@ const LeftSidebar = () => {
           className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
         >
           <span className="fs-4" onClick={() => handleTabButtonClick("Home")}>
-            <LuTwitter />
-            Twitter
+            <TbSocial />
+            SociaLize
           </span>
         </Link>
         <hr />
