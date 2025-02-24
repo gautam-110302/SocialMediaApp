@@ -13,15 +13,15 @@ const CreatePost = () => {
   const navigator = useNavigate();
 
   const handlePostButtonClick = () => {
-    if (textInputElement.current.value === "" && image === null) {
+    if (textInputElement.current.value.trim() === "" && image === null) {
       setErrorMessage("Please add text or an image to your post.");
       return;
     }
-    const tagArray = [];
-    if(tagInputElement.current.value !== ""){
+    let tagArray = [];
+    if(tagInputElement.current.value.trim() !== ""){
       tagArray = tagInputElement.current.value.split(" ");
     }
-    console.log(tagArray.length);
+
     let newPostData = {
       profileData: profileData,
       caption: textInputElement.current.value,
@@ -36,7 +36,6 @@ const CreatePost = () => {
       yourPost: true,
     };
 
-    console.log(newPostData);
     addPost(newPostData);
 
     textInputElement.current.value = "";

@@ -6,11 +6,13 @@ export const PostList = createContext({
   bookmarksList: [],
   profileData: {},
   fetchState: false,
+  searchedItem: {},
   addPost: () => {},
   deletePost: () => {},
   handleLikeButtonClick: () => {},
   handleBookmarkButtonClick: () => {},
   editProfile: () => {},
+  setSearchedItem: () => {},
   tagList: {},
 });
 
@@ -20,54 +22,6 @@ const DEFAULT_PROFILE_DATA = {
   bio: ".",
   imageFile: "/public/dog.png",
 };
-
-// const DEFAULT_POST_LIST = [
-//   {
-//     profileData: {
-//       name: "ReactUser2",
-//       username: "react0002",
-//       imageFile: "/public/cat.png",
-//     },
-//     caption: "React1",
-//     imageFile: "/public/react.png",
-//     likes: 45,
-//     comments: [],
-//     bookmarks: 12,
-//     key: uuidv4(),
-//     likeState: false,
-//     bookmarkState: false,
-//   },
-//   {
-//     profileData: {
-//       name: "ReactUser2",
-//       username: "react0002",
-//       imageFile: "/public/cat.png",
-//     },
-//     caption: "React2",
-//     imageFile: "/public/react.png",
-//     likes: 145,
-//     comments: [],
-//     bookmarks: 22,
-//     key: uuidv4(),
-//     likeState: false,
-//     bookmarkState: false,
-//   },
-//   {
-//     profileData: {
-//       name: "ReactUser2",
-//       username: "react0002",
-//       imageFile: "/public/cat.png",
-//     },
-//     caption: "React3",
-//     imageFile: "/public/react.png",
-//     likes: 24,
-//     comments: [],
-//     bookmarks: 2,
-//     key: uuidv4(),
-//     likeState: false,
-//     bookmarkState: false,
-//   },
-// ];
 
 function profileDataReducer(currProfileData, action) {
   let newProfileData = {
@@ -246,17 +200,21 @@ const PostListProvider = ({ children }) => {
     dispatchPostList(handleBookmarksAction);
   };
 
+  let [searchedItem, setSearchedItem] = useState({ string: "", type: "" });
+
   return (
     <PostList.Provider
       value={{
         postList,
         profileData,
         fetchState,
+        searchedItem,
         addPost,
         deletePost,
         handleLikeButtonClick,
         handleBookmarkButtonClick,
         editProfile,
+        setSearchedItem,
         tagList,
       }}
     >

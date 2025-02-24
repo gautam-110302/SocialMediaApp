@@ -18,18 +18,7 @@ const RightSidebar = () => {
       <div
         className={`d-flex flex-column flex-shrink-0 p-3 text-bg-dark w-280px`}
       >
-        <form
-          className="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 text-white"
-          role="search"
-        >
-          <input
-            type="search"
-            className="background-color form-control text-white border border-secondary rounded-5"
-            placeholder="Search..."
-            aria-label="Search"
-            id="right-sidebar-search-bar"
-          />
-        </form>
+        
 
         <hr />
         <div className="card background-color text-white p-3 border border-secondary">

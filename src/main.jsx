@@ -10,12 +10,17 @@ import Profile from './components/Profile.jsx'
 import Explore from './components/Explore.jsx'
 import Likes from './components/Likes.jsx'
 import YourPosts from './components/YourPosts.jsx'
+import ExploreTrendingTags from './components/ExploreTrendingTags.jsx'
+import SearchedPosts from './components/SearchedPosts.jsx'
 
 const router = createBrowserRouter([
   {path:"/", element: <App/>, children:[
     {path:"/", element: <Home/>},
     {path:"/create-post", element: <CreatePost />},
-    {path:"/explore", element: <Explore/>},
+    {path:"/explore", element: <Explore/>, children:[
+      {path:"/explore", element: <ExploreTrendingTags/>},
+      {path:"/explore/searched-posts", element: <SearchedPosts/>},
+    ]},
     {path:"/profile", element: <Profile/>, children:[
       {path:"/profile", element: <YourPosts/>},
       {path:"/profile/bookmarks", element: <Bookmarks/>},

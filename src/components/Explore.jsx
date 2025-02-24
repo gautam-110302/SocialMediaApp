@@ -1,14 +1,20 @@
-import { useContext } from "react";
-import TrendingTag from "./TrendingTag";
+import { useContext, useState } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 import { PostList } from "../store/PostList";
 
 const Explore = () => {
-  const { tagList } = useContext(PostList);
-  let sortedTags = Array.from(tagList)
-    .sort((a, b) => b[1] - a[1])
-    .map(([key, value]) => ({ tag: key, count: value }));
+  const { setSearchedItem } = useContext(PostList);
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigator = useNavigate();
 
-  console.log(sortedTags);
+  const handleSubmitButton = (event) => {
+    event.preventDefault();
+    if (searchTerm.trim() !== "") {
+      let newSearchedItem = {string:searchTerm, type:"text"}
+      setSearchedItem(newSearchedItem);
+      navigator("/explore/searched-posts")
+    }
+  };
   return (
     <div>
       <div className="border border-secondary">
@@ -16,6 +22,7 @@ const Explore = () => {
           <form
             className="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 text-white"
             role="search"
+            onSubmit={handleSubmitButton}
           >
             <input
               type="search"
@@ -23,27 +30,12 @@ const Explore = () => {
               placeholder="Search..."
               aria-label="Search"
               id="explore-search-bar"
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </form>
         </div>
-        <div className="border border-primary">
-          <button type="button" className="btn btn-dark w-100 rounded-0">
-            Trending
-          </button>
-        </div>
       </div>
-
-      <div className="border border-secondary p-3">
-        <ol className="list-group list-group-numbered">
-          {sortedTags.slice(0, 10).map((tag, index) => (
-            <TrendingTag
-              key={index}
-              tagName={tag.tag}
-              numberOfTags={tag.count}
-            />
-          ))}
-        </ol>
-      </div>
+      <Outlet />
     </div>
   );
 };
