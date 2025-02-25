@@ -7,12 +7,15 @@ export const PostList = createContext({
   profileData: {},
   fetchState: false,
   searchedItem: {},
+  selectedPostKey: "",
   addPost: () => {},
   deletePost: () => {},
   handleLikeButtonClick: () => {},
+  handleCommentButtonClick: () => {},
   handleBookmarkButtonClick: () => {},
   editProfile: () => {},
   setSearchedItem: () => {},
+  setSelectedPostKey: () => {},
   tagList: {},
 });
 
@@ -20,8 +23,67 @@ const DEFAULT_PROFILE_DATA = {
   name: "ReactUser1",
   username: "react0001",
   bio: ".",
-  imageFile: "/public/dog.png",
+  imageFile: "/dog.png",
 };
+
+const DEFAULT_COMMENT_PROFILE_DATA = {
+  name: "ReactCommentator",
+  username: "react0010",
+  bio: ".",
+  imageFile: "/userImage.png",
+};
+const DEFAULT_COMMENTS = [
+  {
+    commentValue: "This is amazing! Keep up the great work!",
+    commentKey: uuidv4(),
+    commentProfileData: DEFAULT_COMMENT_PROFILE_DATA,
+  },
+  {
+    commentValue: "I can't believe how cool this is!",
+    commentKey: uuidv4(),
+    commentProfileData: DEFAULT_COMMENT_PROFILE_DATA,
+  },
+  {
+    commentValue: "Where do I even start? This is fantastic!",
+    commentKey: uuidv4(),
+    commentProfileData: DEFAULT_COMMENT_PROFILE_DATA,
+  },
+  {
+    commentValue: "Incredible! You’ve really outdone yourself this time.",
+    commentKey: uuidv4(),
+    commentProfileData: DEFAULT_COMMENT_PROFILE_DATA,
+  },
+  {
+    commentValue: "I’ve never seen anything like this before!",
+    commentKey: uuidv4(),
+    commentProfileData: DEFAULT_COMMENT_PROFILE_DATA,
+  },
+  {
+    commentValue: "This blew my mind! So creative!",
+    commentKey: uuidv4(),
+    commentProfileData: DEFAULT_COMMENT_PROFILE_DATA,
+  },
+  {
+    commentValue: "I’m obsessed with this! Can’t wait to see more.",
+    commentKey: uuidv4(),
+    commentProfileData: DEFAULT_COMMENT_PROFILE_DATA,
+  },
+  {
+    commentValue: "You nailed it! Everything is perfect.",
+    commentKey: uuidv4(),
+    commentProfileData: DEFAULT_COMMENT_PROFILE_DATA,
+  },
+  {
+    commentValue: "This deserves way more attention. So well done!",
+    commentKey: uuidv4(),
+    commentProfileData: DEFAULT_COMMENT_PROFILE_DATA,
+  },
+  {
+    commentValue: "Wow, just wow. Pure genius!",
+    commentKey: uuidv4(),
+    commentProfileData: DEFAULT_COMMENT_PROFILE_DATA,
+  },
+];
 
 function profileDataReducer(currProfileData, action) {
   let newProfileData = {
@@ -38,7 +100,7 @@ function profileDataReducer(currProfileData, action) {
     if (action.payload.pictureChoice === "change") {
       newProfileData.imageFile = action.payload.data.imageFile;
     } else if (action.payload.pictureChoice === "delete") {
-      newProfileData.imageFile = "/public/userImage.png";
+      newProfileData.imageFile = "/userImage.png";
     }
   }
   return newProfileData;
@@ -76,6 +138,15 @@ function postListReducer(currPostList, action) {
           }
         : post
     );
+  } else if (action.type === "HANDLE_COMMENTS") {
+    newPostList = newPostList.map((post) =>
+      post.key === action.payload.key
+        ? {
+            ...post,
+            comments: [action.payload.comment, ...post.comments],
+          }
+        : post
+    );
   } else if (action.type === "HANDLE_BOOKMARKS") {
     newPostList = newPostList.map((post) =>
       post.key === action.payload
@@ -94,13 +165,13 @@ function postListReducer(currPostList, action) {
         profileData: {
           name: `ReactUser${postData.userId}`,
           username: postData.userId,
-          imageFile: "/public/cat.png",
+          imageFile: "/cat.png",
         },
         caption: postData.body,
         imageFile: "",
         tags: postData.tags,
         likes: postData.reactions.likes,
-        comments: [],
+        comments: DEFAULT_COMMENTS,
         bookmarks: postData.reactions.dislikes,
         key: uuidv4(),
         likeState: false,
@@ -192,6 +263,21 @@ const PostListProvider = ({ children }) => {
     dispatchPostList(handleLikesAction);
   };
 
+  const handleCommentButtonClick = (key, comment) => {
+    const handleCommentAction = {
+      type: "HANDLE_COMMENTS",
+      payload: {
+        key: key,
+        comment: {
+          commentValue: comment,
+          commentKey: uuidv4(),
+          commentProfileData: profileData,
+        },
+      },
+    };
+    dispatchPostList(handleCommentAction);
+  };
+
   const handleBookmarkButtonClick = (key) => {
     const handleBookmarksAction = {
       type: "HANDLE_BOOKMARKS",
@@ -202,6 +288,8 @@ const PostListProvider = ({ children }) => {
 
   let [searchedItem, setSearchedItem] = useState({ string: "", type: "" });
 
+  let [selectedPostKey, setSelectedPostKey] = useState("");
+
   return (
     <PostList.Provider
       value={{
@@ -209,12 +297,15 @@ const PostListProvider = ({ children }) => {
         profileData,
         fetchState,
         searchedItem,
+        selectedPostKey,
         addPost,
         deletePost,
         handleLikeButtonClick,
+        handleCommentButtonClick,
         handleBookmarkButtonClick,
         editProfile,
         setSearchedItem,
+        setSelectedPostKey,
         tagList,
       }}
     >

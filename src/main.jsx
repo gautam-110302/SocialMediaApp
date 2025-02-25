@@ -12,6 +12,7 @@ import Likes from './components/Likes.jsx'
 import YourPosts from './components/YourPosts.jsx'
 import ExploreTrendingTags from './components/ExploreTrendingTags.jsx'
 import SearchedPosts from './components/SearchedPosts.jsx'
+import ClickedPost from './components/ClickedPost.jsx'
 
 const router = createBrowserRouter([
   {path:"/", element: <App/>, children:[
@@ -26,7 +27,7 @@ const router = createBrowserRouter([
       {path:"/profile/bookmarks", element: <Bookmarks/>},
       {path:"/profile/likes", element: <Likes/>},
     ]},
-    
+    {path:"/post", element: <ClickedPost/>}
   ]}
 ])
 

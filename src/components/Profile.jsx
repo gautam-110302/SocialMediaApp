@@ -8,14 +8,12 @@ import EditProfile from "./EditProfile";
 const Profile = () => {
   const [selectedTab, setSelectedTab] = useState("Posts");
   const { profileData } = useContext(PostList);
-  const [showModal, setShowModal] = useState(false); // Track modal visibility
+  const [showModal, setShowModal] = useState(false);
 
-  // Function to open the modal
   const openModal = () => {
     setShowModal(true);
   };
 
-  // Function to close the modal
   const closeModal = () => {
     setShowModal(false);
   };
@@ -45,7 +43,7 @@ const Profile = () => {
             <button
               type="button"
               className="btn btn-primary border border-secondary "
-              onClick={openModal} // Open modal when clicked
+              onClick={openModal}
             >
               Edit profile
             </button>
@@ -107,7 +105,7 @@ const Profile = () => {
           <Outlet />
         </div>
       </div>
-      {/* Render the modal conditionally */}
+
       {showModal && <EditProfile closeModal={closeModal} />}
     </div>
   );
